@@ -21,7 +21,6 @@
  */
 
 
-
 package gestalt.util.sunflow;
 
 
@@ -98,7 +97,7 @@ public class GestaltSunflowRenderer
 
     static final String SHADER_NAME = "my_shader";
 
-    private static Vector<SunflowTranslator> _myTranslators = new Vector<SunflowTranslator>();
+    private static Vector<SunflowTranslator> mTranslators = new Vector<SunflowTranslator>();
 
     private final String COLORSPACE_SRGB_NONLINEAR = "sRGB nonlinear";
 
@@ -129,16 +128,17 @@ public class GestaltSunflowRenderer
     private final String FILTER_BSPLINE = "bspline";
 
     static {
-        _myTranslators.add(new MeshTranslator());
-        _myTranslators.add(new ModelTranslator());
-        _myTranslators.add(new CubeTranslator());
-        _myTranslators.add(new QuadLineTranslator());
-        _myTranslators.add(new QuadsTranslator());
-        _myTranslators.add(new TrianglesTranslator());
-        _myTranslators.add(new PlaneTranslator());
-        _myTranslators.add(new LineTranslator());
+        mTranslators.add(new MeshTranslator());
+        mTranslators.add(new ModelTranslator());
+        mTranslators.add(new CubeTranslator());
+        mTranslators.add(new QuadLineTranslator());
+        mTranslators.add(new QuadsTranslator());
+        mTranslators.add(new TrianglesTranslator());
+        mTranslators.add(new PlaneTranslator());
+        mTranslators.add(new LineTranslator());
 
-        _myTranslators.add(new PersonTranslator());
+        mTranslators.add(new JoglDisposableBinTranslator());
+        mTranslators.add(new PersonTranslator());
 
         PluginRegistry.shaderPlugins.registerPlugin("my_test_shader", MyCustomShader.class);
         PluginRegistry.shaderPlugins.registerPlugin(ShaderTranslucent.name, ShaderTranslucent.class);
@@ -147,7 +147,7 @@ public class GestaltSunflowRenderer
     }
 
     public static Vector<SunflowTranslator> translators() {
-        return _myTranslators;
+        return mTranslators;
     }
 
     public SunflowAPI sunflow() {
@@ -444,20 +444,21 @@ public class GestaltSunflowRenderer
         mSunflow.instance("myPrimitive" + _myDrawableID + ".instance", "myPrimitive" + _myDrawableID);
     }
 
-    public void sendLines(final Line pDrawable,
-                          final float[] pVertices,
-                          final TransformMatrix4f pTransform,
-                          final Vector3f pRotation,
-                          final Vector3f pScale) {
-
-        float[] mTransformedVertices = transformCoords(pVertices, pTransform, pScale, pRotation);
+    public void sendLines(final Line pDrawable) {
+        float[] mTransformedVertices = transformCoords(Util.convertVector3fToFloat(pDrawable.points),
+                                                       pDrawable.transform(),
+                                                       pDrawable.scale(),
+                                                       pDrawable.rotation());
 
         /* we ll do with a line-strip for now */
 
         mSunflow.parameter("segments", pDrawable.points.length - 1);
         mSunflow.parameter("widths", pDrawable.linewidth);
         mSunflow.parameter("points", "point", "vertex", mTransformedVertices);
-        mSunflow.geometry("myPrimitive" + GestaltSunflowRenderer._myDrawableID, "hair");
+
+//        mSunflow.parameter("colors", "???", "???", werkzeug.Util.toArrayFromColor(pDrawable.colors));
+
+        mSunflow.geometry("myPrimitive" + _myDrawableID, "hair");
 
         mSunflow.parameter("shaders", SHADER_NAME + _myDrawableID);
         mSunflow.instance("myPrimitive" + _myDrawableID + ".instance", "myPrimitive" + _myDrawableID);
@@ -620,7 +621,7 @@ public class GestaltSunflowRenderer
     }
 
     private void parseDrawables(final Drawable theDrawable) {
-        for (final SunflowTranslator myTranslator : _myTranslators) {
+        for (final SunflowTranslator myTranslator : mTranslators) {
             if (myTranslator.isClass(theDrawable)) {
                 myTranslator.parse(this, theDrawable);
                 return;

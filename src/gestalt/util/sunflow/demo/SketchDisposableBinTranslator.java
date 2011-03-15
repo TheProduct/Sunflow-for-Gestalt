@@ -24,16 +24,15 @@
 package gestalt.util.sunflow.demo;
 
 
-import gestalt.vectorfont.TextOutlineCreator;
-import gestalt.util.sunflow.Util;
 import gestalt.G;
 import gestalt.render.SketchRenderer;
-import gestalt.shape.Color;
+import gestalt.vectorfont.TextOutlineCreator;
+import gestalt.util.sunflow.Util;
 import java.util.Vector;
 import mathematik.Vector3f;
 
 
-public class SketchTestOutlineExtractor
+public class SketchDisposableBinTranslator
         extends SketchRenderer {
 
     private Vector<Vector<Vector<Vector3f>>> mWordOutlines;
@@ -41,13 +40,6 @@ public class SketchTestOutlineExtractor
     private final String mString = "Since I was very young I realized ?";
 
     private Vector<Vector3f[]> mTriangles;
-
-    private Color[] mColors = {new Color(0, 0, 1),
-                               new Color(1, 0.5f, 0),
-                               new Color(1, 0, 1),
-                               new Color(1, 0, 0.5f),
-                               new Color(1, 1, 0),
-                               new Color(0, 0.5f, 1)};
 
     public void setup() {
         cameramover(true);
@@ -69,28 +61,11 @@ public class SketchTestOutlineExtractor
                 }
             }
         }
-
     }
 
     public void loop(final float theDeltaTime) {
-        /* outlines */
-        int myColor = 0;
-        int myCharID = 0;
-        for (final Vector<Vector<Vector3f>> myCharacterOutlines : mWordOutlines) {
-            for (final Vector<Vector3f> myShapeOutlines : myCharacterOutlines) {
-                myColor++;
-                myColor %= mColors.length;
-                g().color(mColors[myColor]);
-                Vector3f myPreviousPoint = null;
-                for (final Vector3f p : myShapeOutlines) {
-                    if (myPreviousPoint != null) {
-                        g().line(p.x, p.y, 0, myPreviousPoint.x, myPreviousPoint.y, 0);
-                    }
-                    myPreviousPoint = p;
-                }
-            }
-            myCharID++;
-        }
+        g().line(-300, 0, 300, 50);
+        g().line(-300, 50, 300, 0);
 
         /* triangles  */
         g().color(1);
@@ -114,6 +89,6 @@ public class SketchTestOutlineExtractor
     }
 
     public static void main(String[] args) {
-        G.init(SketchTestOutlineExtractor.class);
+        G.init(SketchDisposableBinTranslator.class);
     }
 }

@@ -24,40 +24,34 @@
 package gestalt.util.sunflow.demo;
 
 
-import gestalt.util.sunflow.GestaltSunflowRenderer;
-import gestalt.util.sunflow.Persons;
-import gestalt.util.sunflow.Persons.Person;
-import gestalt.util.sunflow.Util;
 import gestalt.G;
-import gestalt.Gestalt;
-import gestalt.context.DisplayCapabilities;
-import gestalt.render.AnimatorRenderer;
-
+import gestalt.render.SketchRenderer;
+import gestalt.util.sunflow.Util;
 import mathematik.Vector3f;
 
 
-public class SketchTestPersons
-        extends AnimatorRenderer {
+public class SketchLineRing
+        extends SketchRenderer {
 
     public void setup() {
         cameramover(true);
-        camera().setMode(Gestalt.CAMERA_MODE_LOOK_AT);
-        WORKAROUND_FORCE_QUIT = false;
-
-        GestaltSunflowRenderer.scale_viewport = 1f;
-
-        final Persons myPersons = new Persons();
-        bin(BIN_3D).add(myPersons);
-
-        for (int i = 0; i < 1000; i++) {
-            final Person myPerson = myPersons.instance();
-            myPerson.position.set(gestalt.util.sunflow.Util.random(-100, 100), 0, gestalt.util.sunflow.Util.random(-100, 100));
-            myPerson.rotation.y = gestalt.util.sunflow.Util.random(-PI / 4, PI / 4);
-            myPerson.scale.scale(0.05f);
-        }
+        camera().setMode(CAMERA_MODE_LOOK_AT);
+        camera().position().set(-271.0138, 326.966, 476.93112);
+        bin(BIN_2D_FOREGROUND).add(stats_view());
+        bin(BIN_3D).add(g());
+        backgroundcolor().set(0.2f);
     }
 
     public void loop(final float theDeltaTime) {
+        for (float r = 0; r < PI * 2; r += PI * 2 / 36) {
+            final float x = sin(r) * 100 + 100;
+            final float y = cos(r) * 100 + 100;
+            final float pX = sin(r - PI * 2 / 36) * 100 + 100;
+            final float pY = cos(r - PI * 2 / 36) * 100 + 100;
+            g().color(abs(sin(r * 0.33f)), abs(cos(r)), abs(cos(r * 0.85f)), 1);
+            g().linewidth(abs(sin(r)) * 5 + 1);
+            g().line(x, y, pX, pY);
+        }
     }
 
     public void keyPressed(char c, int theKeyCode) {
@@ -71,10 +65,8 @@ public class SketchTestPersons
     }
 
     public static void main(String[] args) {
-        DisplayCapabilities myDisplayCapabilities = new DisplayCapabilities();
-        myDisplayCapabilities.width = 640;
-        myDisplayCapabilities.height = 480;
-        myDisplayCapabilities.backgroundcolor.set(0.8f);
-        G.init(SketchTestPersons.class, myDisplayCapabilities);
+        G.init(SketchLineRing.class);
     }
 }
+
+

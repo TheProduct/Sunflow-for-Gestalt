@@ -24,9 +24,7 @@
 package gestalt.util.sunflow;
 
 
-import com.sun.j3d.utils.geometry.GeometryInfo;
 import java.util.Vector;
-
 
 import gestalt.extension.quadline.QuadLine;
 import gestalt.impl.jogl.shape.JoglTriangle;
@@ -34,14 +32,9 @@ import gestalt.render.BasicRenderer;
 import gestalt.render.bin.AbstractBin;
 import gestalt.shape.Triangle;
 import gestalt.shape.Triangles;
-import javax.media.j3d.GeometryArray;
-import javax.vecmath.Point3f;
-
 import mathematik.Random;
-import mathematik.Vector3f;
 
-import teilchen.Particle;
-import teilchen.util.ParticleTrail;
+import mathematik.Vector3f;
 
 
 public class Util {
@@ -92,25 +85,13 @@ public class Util {
         return new Random().getFloat(a, b);
     }
 
-    public static float[] convertVector3fToFloat(final Vector3f[] pVector) {
-        final float[] mFloats = new float[pVector.length * 3];
-        for (int i = 0; i < pVector.length; i++) {
-            final Vector3f v = pVector[i];
-            mFloats[i * 3 + 0] = v.x;
-            mFloats[i * 3 + 1] = v.y;
-            mFloats[i * 3 + 2] = v.z;
-        }
-        return mFloats;
-    }
-
-    public static void mapLineToQuadline(QuadLine theLine, ParticleTrail theTrail) {
-        final Vector<Particle> myFragments = theTrail.fragments();
-        if (myFragments.size() < 2) {
+    public static void mapLineToQuadline(QuadLine theLine, Vector<Vector3f> pLine) {
+        if (pLine.size() < 2) {
             return;
         } else {
-            theLine.points = new Vector3f[myFragments.size()];
+            theLine.points = new Vector3f[pLine.size()];
             for (int i = 0; i < theLine.points.length; i++) {
-                theLine.points[i] = myFragments.get(i).position();
+                theLine.points[i] = pLine.get(i);
             }
             theLine.update();
         }
@@ -133,45 +114,14 @@ public class Util {
                                       pPNGFile);
     }
 
-    public static Vector<Vector3f[]> convertToTriangles(final Vector<Vector<Vector<Vector3f>>> theWord) {
-        final Vector<Vector3f[]> myCharTriangles = new Vector<Vector3f[]>();
-        for (int i = 0; i < theWord.size(); i++) {
-            final Vector<Vector3f> myVertices = new Vector<Vector3f>();
-            final Vector<Integer> myVertivesPerShape = new Vector<Integer>();
-            final Vector<Vector<Vector3f>> myCharacter = theWord.get(i);
-            for (int j = 0; j < myCharacter.size(); j++) {
-                final Vector<Vector3f> myOutline = myCharacter.get(j);
-                myVertivesPerShape.add(myOutline.size());
-                for (Vector3f v : myOutline) {
-                    myVertices.add(v);
-                }
-            }
-            if (myCharacter.size() > 0) {
-                myCharTriangles.add(triangulate(werkzeug.Util.toFloatArray(myVertices),
-                                                werkzeug.Util.toArray(myVertivesPerShape),
-                                                new int[] {myCharacter.size()}));
-            }
+    public static float[] convertVector3fToFloat(final Vector3f[] pVector) {
+        final float[] mFloats = new float[pVector.length * 3];
+        for (int i = 0; i < pVector.length; i++) {
+            final Vector3f v = pVector[i];
+            mFloats[i * 3 + 0] = v.x;
+            mFloats[i * 3 + 1] = v.y;
+            mFloats[i * 3 + 2] = v.z;
         }
-        return myCharTriangles;
-    }
-
-    public static Vector3f[] triangulate(float[] theData,
-                                         int[] theStripCount,
-                                         int[] theContourCount) {
-        final GeometryInfo myGeometryInfo = new GeometryInfo(GeometryInfo.POLYGON_ARRAY);
-        myGeometryInfo.setCoordinates(theData);
-        myGeometryInfo.setStripCounts(theStripCount);
-        myGeometryInfo.setContourCounts(theContourCount);
-
-        final GeometryArray myGeometryArray = myGeometryInfo.getGeometryArray();
-        final Vector3f[] myPoints = new Vector3f[myGeometryArray.getValidVertexCount()];
-        for (int i = 0; i < myGeometryArray.getValidVertexCount(); i++) {
-            final Point3f p = new Point3f();
-            myGeometryArray.getCoordinate(i, p);
-            myPoints[i] = new Vector3f();
-            myPoints[i].set(p.x, p.y, p.z);
-        }
-
-        return myPoints;
+        return mFloats;
     }
 }

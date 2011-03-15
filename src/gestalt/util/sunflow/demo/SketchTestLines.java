@@ -39,7 +39,7 @@ import mathematik.Vector3f;
 public class SketchTestLines
         extends AnimatorRenderer {
 
-    private Line _myLine;
+    private Line mLine;
 
     public void setup() {
         cameramover(true);
@@ -49,13 +49,13 @@ public class SketchTestLines
         GestaltSunflowRenderer.scale_viewport = 1f;
 
         /* create a line with the drawablefactory */
-        _myLine = drawablefactory().line();
-        _myLine.material().color.set(1f, 1f);
-        _myLine.points = new Vector3f[500];
-        for (int i = 0; i < _myLine.points.length; i++) {
-            _myLine.points[i] = new Vector3f(Math.random() * 300 - 150,
-                                             Math.random() * 300 - 150,
-                                             Math.random() * 300 - 150);
+        mLine = drawablefactory().line();
+        mLine.material().color.set(1f, 1f);
+        mLine.points = new Vector3f[500];
+        for (int i = 0; i < mLine.points.length; i++) {
+            mLine.points[i] = new Vector3f(Math.random() * 300 - 150,
+                                           Math.random() * 300 - 150,
+                                           Math.random() * 300 - 150);
         }
 
         final int WIDTH = 25;
@@ -64,20 +64,20 @@ public class SketchTestLines
         final float SCALE = 10;
         final float mOffsetX = WIDTH * SCALE / -2;
         final float mOffsetY = HEIGHT * SCALE / -2;
-        _myLine.points = new Vector3f[WIDTH * HEIGHT * 2];
+        mLine.points = new Vector3f[WIDTH * HEIGHT * 2];
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
                 final int i = x + y * WIDTH;
-                float mOffset = (float)(Math.sin(2 * PI * (float)i / _myLine.points.length));
-                _myLine.points[i * 2 + 0] = new Vector3f(x * SCALE + mOffsetX, mOffset * LENGTH + LENGTH * 2, y * SCALE + mOffsetY);
-                _myLine.points[i * 2 + 1] = new Vector3f(x * SCALE + mOffsetX, 0, y * SCALE + mOffsetY);
+                float mOffset = (float)(Math.sin(2 * PI * (float)i / mLine.points.length));
+                mLine.points[i * 2 + 0] = new Vector3f(x * SCALE + mOffsetX, mOffset * LENGTH + LENGTH * 2, y * SCALE + mOffsetY);
+                mLine.points[i * 2 + 1] = new Vector3f(x * SCALE + mOffsetX, 0, y * SCALE + mOffsetY);
             }
         }
 
-        _myLine.linewidth = 0.75f;
+        mLine.linewidth = 0.75f;
 
         /* add line to renderer */
-        bin(BIN_3D).add(_myLine);
+        bin(BIN_3D).add(mLine);
     }
 
     public void loop(final float theDeltaTime) {
@@ -89,7 +89,7 @@ public class SketchTestLines
                         bin(BIN_3D),
                         this,
                         new Vector3f(),
-                        Resource.getPath("") + "/test.png");
+                        System.getProperty("user.home") + "/Desktop/" + getClass().getSimpleName() + werkzeug.Util.now() + ".png");
         }
     }
 

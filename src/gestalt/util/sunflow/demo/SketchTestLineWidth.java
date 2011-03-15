@@ -24,69 +24,36 @@
 package gestalt.util.sunflow.demo;
 
 
+import gestalt.util.sunflow.Util;
 import data.Resource;
 import gestalt.G;
 import gestalt.Gestalt;
 import gestalt.context.DisplayCapabilities;
 import gestalt.render.AnimatorRenderer;
-import gestalt.shape.Cube;
-import gestalt.shape.Plane;
+import gestalt.shape.Line;
 
-import mathematik.Random;
-import gestalt.shape.Color;
-import gestalt.util.sunflow.Util;
+import mathematik.Vector3f;
 
 
-public class SketchMultiColorBoxArray
+public class SketchTestLineWidth
         extends AnimatorRenderer {
-
-    private Plane mFloor;
-
-    private static final Class SKETCH_CLASS = SketchMultiColorBoxArray.class;
 
     public void setup() {
         cameramover(true);
         camera().setMode(Gestalt.CAMERA_MODE_LOOK_AT);
         WORKAROUND_FORCE_QUIT = false;
 
-        mFloor = G.plane();
-        mFloor.scale().set(1000, 1000);
-        mFloor.position().set(0, 0, 0);
-        mFloor.rotation().x = PI_HALF;
-        mFloor.material().transparent = true;
-        mFloor.material().color.set(1, 0.2f);
-
-        final int CUBES = 20;
-        for (int x = 0; x < CUBES; x++) {
-            for (int y = 0; y < CUBES; y++) {
-                for (int z = 0; z < CUBES; z++) {
-                    Cube p = G.cube();
-                    p.scale().set(5, 5, 5);
-                    p.position().set(x * 8, y * 8, z * 8);
-                    p.position().add(CUBES * 8 / -2.0f,
-                                     8,
-                                     CUBES * 8 / -2.0f);
-                    p.material().color.set(getRandomColor());
-                }
-            }
+        /* create a line with the drawablefactory */
+        for (int i = 0; i < 10; i++) {
+            final Line mLine = drawablefactory().line();
+            mLine.material().color.set(1f, 1f);
+            mLine.points = new Vector3f[] {
+                        new Vector3f(-100, i * 10, 0),
+                        new Vector3f(100, i * 10, 0)
+                    };
+            mLine.linewidth = i * 0.25f;
+            bin(BIN_3D).add(mLine);
         }
-    }
-
-    private Color getRandomColor() {
-        Color c = new Color(0, 0, 0);
-        while ((c.r == 0.0f && c.g == 0.0f && c.b == 0.0f)) {
-            c.set(getRandomValue(),
-                  getRandomValue(),
-                  getRandomValue());
-        }
-        return c;
-    }
-
-    private float getRandomValue() {
-        final int myGrid = 1;
-        final Random r = new Random();
-        final float myValue = r.getInt(0, myGrid);
-        return (myValue / myGrid);
     }
 
     public void loop(final float theDeltaTime) {
@@ -97,7 +64,7 @@ public class SketchMultiColorBoxArray
             Util.render(c == 'p',
                         bin(BIN_3D),
                         this,
-                        mFloor.position(),
+                        new Vector3f(),
                         System.getProperty("user.home") + "/Desktop/" + getClass().getSimpleName() + werkzeug.Util.now() + ".png");
         }
     }
@@ -107,7 +74,9 @@ public class SketchMultiColorBoxArray
         myDisplayCapabilities.width = 640;
         myDisplayCapabilities.height = 480;
         myDisplayCapabilities.backgroundcolor.set(0.8f);
-
-        G.init(SKETCH_CLASS, myDisplayCapabilities);
+        G.init(SketchTestLineWidth.class, myDisplayCapabilities);
     }
 }
+
+
+
