@@ -46,20 +46,28 @@ import data.Resource;
 public class Persons
         extends AbstractDrawable {
 
-    private final JoglMesh _myPersonModel;
+    private final JoglMesh mPersonModel;
 
-    private final String _myImageFile;
+    private final String mPersonTexturePath;
 
-    private final Vector<Person> _myPersons = new Vector<Person>();
+    private final Vector<Person> mPersons = new Vector<Person>();
 
     public Persons() {
-        _myImageFile = Resource.getPath("person/person0001.jpg");
-        _myPersonModel = model(Resource.getStream("person/person0001.obj"), _myImageFile);
+        this(Resource.getStream("person/person0001.obj"), Resource.getPath("person/person0001.jpg"));
+    }
+
+    public Persons(final InputStream pModelFile, final String pImageFile) {
+        mPersonTexturePath = pImageFile;
+        mPersonModel = model(pModelFile, pImageFile);
+    }
+
+    public String texturefile() {
+        return mPersonTexturePath;
     }
 
     public Person instance() {
         final Person myPersonInstance = new Person();
-        _myPersons.add(myPersonInstance);
+        mPersons.add(myPersonInstance);
         return myPersonInstance;
     }
 
@@ -82,23 +90,19 @@ public class Persons
 
     public void draw(GLContext theRenderContext) {
         for (Person myPersonInstance : persons()) {
-            _myPersonModel.transform().set(myPersonInstance.transform);
-            _myPersonModel.rotation().set(myPersonInstance.rotation);
-            _myPersonModel.scale().set(myPersonInstance.scale);
-            _myPersonModel.draw(theRenderContext);
+            mPersonModel.transform().set(myPersonInstance.transform);
+            mPersonModel.rotation().set(myPersonInstance.rotation);
+            mPersonModel.scale().set(myPersonInstance.scale);
+            mPersonModel.draw(theRenderContext);
         }
     }
 
-    public String texturefile() {
-        return _myImageFile;
-    }
-
     public JoglMesh mesh() {
-        return _myPersonModel;
+        return mPersonModel;
     }
 
     public Vector<Person> persons() {
-        return _myPersons;
+        return mPersons;
     }
 
     public class Person {
