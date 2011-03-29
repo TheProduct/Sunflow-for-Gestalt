@@ -97,6 +97,10 @@ public class Util {
         }
     }
 
+    public static String good_render_result_filename(Class mClass) {
+        return System.getProperty("user.home") + "/Desktop/" + mClass.getSimpleName() + werkzeug.Util.now() + ".png";
+    }
+
     public static void render(boolean pPreview,
                               AbstractBin pBin,
                               BasicRenderer pRenderer,

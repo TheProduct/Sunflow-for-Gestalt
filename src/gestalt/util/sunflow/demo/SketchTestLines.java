@@ -26,7 +26,6 @@ package gestalt.util.sunflow.demo;
 
 import gestalt.util.sunflow.GestaltSunflowRenderer;
 import gestalt.util.sunflow.Util;
-import data.Resource;
 import gestalt.G;
 import gestalt.Gestalt;
 import gestalt.context.DisplayCapabilities;

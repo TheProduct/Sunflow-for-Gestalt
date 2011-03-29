@@ -97,7 +97,7 @@ public class GestaltSunflowRenderer
 
     static final String SHADER_NAME = "my_shader";
 
-    private static Vector<SunflowTranslator> mTranslators = new Vector<SunflowTranslator>();
+    private static final Vector<SunflowTranslator> mTranslators = new Vector<SunflowTranslator>();
 
     private final String COLORSPACE_SRGB_NONLINEAR = "sRGB nonlinear";
 

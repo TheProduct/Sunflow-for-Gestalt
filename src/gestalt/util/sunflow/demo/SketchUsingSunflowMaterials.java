@@ -27,47 +27,52 @@ package gestalt.util.sunflow.demo;
 import gestalt.G;
 import gestalt.Gestalt;
 import gestalt.context.DisplayCapabilities;
+import gestalt.impl.jogl.shape.JoglCube;
 import gestalt.render.AnimatorRenderer;
 import gestalt.shape.Cube;
-import gestalt.shape.Plane;
+import gestalt.util.sunflow.GestaltSunflowRenderer;
 
 import mathematik.Random;
 import gestalt.shape.Color;
+import gestalt.util.sunflow.SunflowMaterial;
 import gestalt.util.sunflow.Util;
+import mathematik.Vector3f;
 
 
-public class SketchMultiColorBoxArray
+public class SketchUsingSunflowMaterials
         extends AnimatorRenderer {
-
-    private Plane mFloor;
-
-    private static final Class SKETCH_CLASS = SketchMultiColorBoxArray.class;
 
     public void setup() {
         cameramover(true);
         camera().setMode(Gestalt.CAMERA_MODE_LOOK_AT);
         WORKAROUND_FORCE_QUIT = false;
 
-        mFloor = G.plane();
-        mFloor.scale().set(1000, 1000);
-        mFloor.position().set(0, 0, 0);
-        mFloor.rotation().x = PI_HALF;
-        mFloor.material().transparent = true;
-        mFloor.material().color.set(1, 0.2f);
-
-        final int CUBES = 20;
+        final int CUBES = 10;
         for (int x = 0; x < CUBES; x++) {
             for (int y = 0; y < CUBES; y++) {
                 for (int z = 0; z < CUBES; z++) {
-                    Cube p = G.cube();
+                    Cube p = new CubeWithSunflowMaterial();
+                    bin(BIN_3D).add(p);
                     p.scale().set(5, 5, 5);
                     p.position().set(x * 8, y * 8, z * 8);
                     p.position().add(CUBES * 8 / -2.0f,
                                      8,
                                      CUBES * 8 / -2.0f);
-                    p.material().color.set(getRandomColor());
+                    p.material().color.set((float)x / (float)CUBES, (float)y / (float)CUBES, (float)z / (float)CUBES);
                 }
             }
+        }
+    }
+
+    class CubeWithSunflowMaterial
+            extends JoglCube
+            implements SunflowMaterial {
+
+        public void sendMaterial(GestaltSunflowRenderer theParent) {
+            theParent.sendGlassMaterial(material().color,
+                                        1.33f,
+                                        50,
+                                        new Color(1.0f));
         }
     }
 
@@ -96,8 +101,8 @@ public class SketchMultiColorBoxArray
             Util.render(c == 'p',
                         bin(BIN_3D),
                         this,
-                        mFloor.position(),
-                        System.getProperty("user.home") + "/Desktop/" + getClass().getSimpleName() + werkzeug.Util.now() + ".png");
+                        new Vector3f(),
+                        Util.good_render_result_filename(getClass()));
         }
     }
 
@@ -107,6 +112,6 @@ public class SketchMultiColorBoxArray
         myDisplayCapabilities.height = 480;
         myDisplayCapabilities.backgroundcolor.set(0.8f);
 
-        G.init(SKETCH_CLASS, myDisplayCapabilities);
+        G.init(SketchUsingSunflowMaterials.class, myDisplayCapabilities);
     }
 }
