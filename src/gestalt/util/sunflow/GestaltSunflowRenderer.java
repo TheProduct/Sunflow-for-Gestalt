@@ -75,7 +75,7 @@ public class GestaltSunflowRenderer
 
     public static float scale_viewport = 1;
 
-    private final SunflowAPI mSunflow;
+    private SunflowAPI mSunflow;
 
     private Display _myDisplay;
 
@@ -586,7 +586,7 @@ public class GestaltSunflowRenderer
         if (headless) {
             myRenderer.setDisplay(new FileDisplay(theFilePath));
         } else {
-            myRenderer.setDisplay(new MyFrameDisplay(theFilePath));
+            myRenderer.setDisplay(new MyFrameDisplay(theFilePath, myRenderer));
         }
 
         /* --- */
@@ -642,18 +642,25 @@ public class GestaltSunflowRenderer
 
         private RenderFrame frame;
 
-        public MyFrameDisplay() {
-            this(null);
+        private GestaltSunflowRenderer mRenderer;
+
+        public MyFrameDisplay(GestaltSunflowRenderer pRenderer) {
+            this(null, pRenderer);
         }
 
-        public MyFrameDisplay(String filename) {
+        public MyFrameDisplay(String filename, GestaltSunflowRenderer pRenderer) {
             this.filename = filename;
+            mRenderer = pRenderer;
             frame = null;
+        }
+
+        public void stop() {
+            /* zauberlehring */
         }
 
         public void imageBegin(int w, int h, int bucketSize) {
             if (frame == null) {
-                frame = new RenderFrame();
+                frame = new RenderFrame(this);
                 frame.imagePanel.imageBegin(w, h, bucketSize);
                 Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
                 boolean needFit = false;
@@ -704,8 +711,11 @@ public class GestaltSunflowRenderer
 
             ImagePanel imagePanel;
 
-            RenderFrame() {
+            MyFrameDisplay mParent;
+
+            RenderFrame(MyFrameDisplay pParent) {
                 super("Sunflow v" + SunflowAPI.VERSION);
+                mParent = pParent;
                 setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                 addKeyListener(new KeyAdapter() {
 
@@ -713,6 +723,8 @@ public class GestaltSunflowRenderer
                     public void keyPressed(KeyEvent e) {
                         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                             setVisible(false);
+                            mParent.stop();
+                            System.out.println("### why not stop the render thread, eh?");
                             dispose();
                         }
                     }
