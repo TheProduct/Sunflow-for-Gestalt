@@ -28,11 +28,11 @@ import gestalt.G;
 import gestalt.Gestalt;
 import gestalt.context.DisplayCapabilities;
 import gestalt.render.AnimatorRenderer;
-import gestalt.shape.Cube;
+import gestalt.shape.Cuboid;
 import gestalt.shape.Plane;
 
 import mathematik.Random;
-import gestalt.shape.Color;
+import gestalt.material.Color;
 import gestalt.util.sunflow.Util;
 
 
@@ -59,7 +59,7 @@ public class SketchMultiColorBoxArray
         for (int x = 0; x < CUBES; x++) {
             for (int y = 0; y < CUBES; y++) {
                 for (int z = 0; z < CUBES; z++) {
-                    Cube p = G.cube();
+                    Cuboid p = G.cuboid();
                     p.scale().set(5, 5, 5);
                     p.position().set(x * 8, y * 8, z * 8);
                     p.position().add(CUBES * 8 / -2.0f,

@@ -27,9 +27,9 @@ package gestalt.util.sunflow;
 import java.util.Vector;
 
 import gestalt.extension.quadline.QuadLine;
-import gestalt.impl.jogl.shape.JoglTriangle;
+import gestalt.shape.Triangle;
 import gestalt.render.BasicRenderer;
-import gestalt.render.bin.AbstractBin;
+import gestalt.render.bin.Bin;
 import gestalt.shape.Triangle;
 import gestalt.shape.Triangles;
 import mathematik.Random;
@@ -41,7 +41,7 @@ public class Util {
 
     public static final void updateTriangles(Triangles theTriangles, Vector3f[] theVertices) {
         for (int i = 0; i < theVertices.length; i += 3) {
-            final Triangle myTriangle = new JoglTriangle();
+            final Triangle myTriangle = new Triangle();
             myTriangle.a().position.set(theVertices[i + 0]);
             myTriangle.b().position.set(theVertices[i + 1]);
             myTriangle.c().position.set(theVertices[i + 2]);
@@ -60,7 +60,7 @@ public class Util {
 
     public static final void updateTriangles(Triangles theTriangles, Vector<Vector3f> theVertices) {
         for (int i = 0; i < theVertices.size(); i += 3) {
-            final Triangle myTriangle = new JoglTriangle();
+            final Triangle myTriangle = new Triangle();
             myTriangle.a().position.set(theVertices.get(i + 0));
             myTriangle.b().position.set(theVertices.get(i + 1));
             myTriangle.c().position.set(theVertices.get(i + 2));
@@ -102,7 +102,7 @@ public class Util {
     }
 
     public static void render(boolean pPreview,
-                              AbstractBin pBin,
+                              Bin pBin,
                               BasicRenderer pRenderer,
                               Vector3f pFloor,
                               String pPNGFile) {

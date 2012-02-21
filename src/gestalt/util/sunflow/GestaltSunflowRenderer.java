@@ -39,10 +39,10 @@ import org.sunflow.system.ImagePanel;
 
 import gestalt.render.BasicRenderer;
 import gestalt.render.Drawable;
-import gestalt.render.bin.AbstractBin;
-import gestalt.render.plugin.Camera;
-import gestalt.render.plugin.Light;
-import gestalt.shape.Color;
+import gestalt.render.bin.Bin;
+import gestalt.render.controller.Camera;
+import gestalt.render.controller.cameraplugins.Light;
+import gestalt.material.Color;
 import gestalt.shape.Line;
 
 import mathematik.Matrix3f;
@@ -574,7 +574,7 @@ public class GestaltSunflowRenderer
         }
     }
 
-    public static void render(BasicRenderer theGestalt, AbstractBin theBin, String theFilePath) {
+    public static void render(BasicRenderer theGestalt, Bin theBin, String theFilePath) {
         GestaltSunflowRenderer myRenderer = new GestaltSunflowRenderer();
         myRenderer.width(theGestalt.displaycapabilities().width);
         myRenderer.height(theGestalt.displaycapabilities().height);
@@ -608,7 +608,7 @@ public class GestaltSunflowRenderer
         _myDisplay = theDisplay;
     }
 
-    private void parse(final AbstractBin theBin) {
+    private void parse(final Bin theBin) {
         Drawable[] mySortables = theBin.getDataRef();
         for (int i = 0; i < theBin.size(); i++) {
             final Drawable myDrawable = mySortables[i];

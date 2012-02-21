@@ -28,7 +28,7 @@ import gestalt.vectorfont.TextOutlineCreator;
 import gestalt.util.sunflow.Util;
 import gestalt.G;
 import gestalt.render.SketchRenderer;
-import gestalt.shape.Color;
+import gestalt.material.Color;
 import java.util.Vector;
 import mathematik.Vector3f;
 

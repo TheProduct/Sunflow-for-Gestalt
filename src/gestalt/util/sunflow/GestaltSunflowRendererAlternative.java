@@ -25,9 +25,9 @@ package gestalt.util.sunflow;
 
 
 import gestalt.render.Drawable;
-import gestalt.render.bin.AbstractBin;
-import gestalt.render.plugin.Camera;
-import gestalt.render.plugin.Light;
+import gestalt.render.bin.Bin;
+import gestalt.render.controller.Camera;
+import gestalt.render.controller.cameraplugins.Light;
 import java.util.Vector;
 
 
@@ -36,7 +36,7 @@ public class GestaltSunflowRendererAlternative
 
     private Vector<SunflowTranslator> _myTranslators = new Vector<SunflowTranslator>();
 
-    public static gestalt.shape.Color BACKGROUNDCOLOR = new gestalt.shape.Color(1);
+    public static gestalt.material.Color BACKGROUNDCOLOR = new gestalt.material.Color(1);
 
     private static final float MAX_DIST = 600f;
 
@@ -54,14 +54,14 @@ public class GestaltSunflowRendererAlternative
         return _myTranslators;
     }
 
-    public static void render(AbstractBin theBin, Camera theCamera, Light theLight) {
+    public static void render(Bin theBin, Camera theCamera, Light theLight) {
         GestaltSunflowRendererAlternative myRenderer = new GestaltSunflowRendererAlternative();
         myRenderer.render(theCamera, theLight);
         myRenderer.parse(theBin);
         myRenderer.start();
     }
 
-    private void parse(final AbstractBin theBin) {
+    private void parse(final Bin theBin) {
         Drawable[] mySortables = theBin.getDataRef();
         for (int i = 0; i < theBin.size(); i++) {
             final Drawable myDrawable = mySortables[i];
@@ -128,9 +128,9 @@ public class GestaltSunflowRendererAlternative
 //                              new Color(255, 255, 255));
     }
 
-    public void sendAmbientOcclusionMaterial(gestalt.shape.Color theColor) {
+    public void sendAmbientOcclusionMaterial(gestalt.material.Color theColor) {
         if (theColor == null) {
-            theColor = new gestalt.shape.Color(1, 1, 1, 1);
+            theColor = new gestalt.material.Color(1, 1, 1, 1);
         }
 
 //        sunflow.setAmbientOcclusionShader(SHADER_NAME + _myDrawableID,

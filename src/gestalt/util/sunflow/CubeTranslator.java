@@ -25,7 +25,7 @@ package gestalt.util.sunflow;
 
 
 import gestalt.render.Drawable;
-import gestalt.shape.Cube;
+import gestalt.shape.Cuboid;
 
 
 public class CubeTranslator
@@ -77,12 +77,12 @@ public class CubeTranslator
     };
 
     public boolean isClass(Drawable theDrawable) {
-        return theDrawable instanceof Cube;
+        return theDrawable instanceof Cuboid;
     }
 
     public void parse(GestaltSunflowRenderer theParent,
                       Drawable theDrawable) {
-        final Cube myDrawable = (Cube)theDrawable;
+        final Cuboid myDrawable = (Cuboid)theDrawable;
 
         /* material */
         if (myDrawable instanceof SunflowMaterial) {

@@ -27,13 +27,13 @@ package gestalt.util.sunflow.demo;
 import gestalt.G;
 import gestalt.Gestalt;
 import gestalt.context.DisplayCapabilities;
-import gestalt.impl.jogl.shape.JoglCube;
+import gestalt.shape.Cuboid;
 import gestalt.render.AnimatorRenderer;
-import gestalt.shape.Cube;
+import gestalt.shape.Cuboid;
 import gestalt.util.sunflow.GestaltSunflowRenderer;
 
 import mathematik.Random;
-import gestalt.shape.Color;
+import gestalt.material.Color;
 import gestalt.util.sunflow.SunflowMaterial;
 import gestalt.util.sunflow.Util;
 import mathematik.Vector3f;
@@ -51,7 +51,7 @@ public class SketchUsingSunflowMaterials
         for (int x = 0; x < CUBES; x++) {
             for (int y = 0; y < CUBES; y++) {
                 for (int z = 0; z < CUBES; z++) {
-                    Cube p = new CubeWithSunflowMaterial();
+                    Cuboid p = new CubeWithSunflowMaterial();
                     bin(BIN_3D).add(p);
                     p.scale().set(5, 5, 5);
                     p.position().set(x * 8, y * 8, z * 8);
@@ -65,7 +65,7 @@ public class SketchUsingSunflowMaterials
     }
 
     class CubeWithSunflowMaterial
-            extends JoglCube
+            extends Cuboid
             implements SunflowMaterial {
 
         public void sendMaterial(GestaltSunflowRenderer theParent) {

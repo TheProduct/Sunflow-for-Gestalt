@@ -25,11 +25,11 @@ package gestalt.util.sunflow;
 
 
 import gestalt.Gestalt;
-import gestalt.candidates.JoglDisposableBin;
-import gestalt.impl.jogl.shape.JoglLine;
-import gestalt.impl.jogl.shape.JoglMesh;
+import gestalt.render.bin.DisposableBin;
+import gestalt.shape.Line;
+import gestalt.shape.Mesh;
 import gestalt.render.Drawable;
-import gestalt.shape.Color;
+import gestalt.material.Color;
 import gestalt.shape.Line;
 import java.util.Vector;
 import mathematik.Vector3f;
@@ -41,12 +41,12 @@ public class JoglDisposableBinTranslator
     public boolean mParseLineAsIndividualShape = true;
 
     public boolean isClass(Drawable theDrawable) {
-        return theDrawable instanceof JoglDisposableBin;
+        return theDrawable instanceof DisposableBin;
     }
 
     public void parse(GestaltSunflowRenderer theParent,
                       Drawable theDrawable) {
-        final JoglDisposableBin g = (JoglDisposableBin)theDrawable;
+        final DisposableBin g = (DisposableBin)theDrawable;
 
         /* delegate triangles */
         {
@@ -54,7 +54,7 @@ public class JoglDisposableBinTranslator
             final Vector<Vector3f> mVertexData = new Vector<Vector3f>();
             final Vector<Color> mColorData = new Vector<Color>();
             g.collectTriangleData(mVertexData, mColorData);
-            final JoglMesh mMesh = new JoglMesh(werkzeug.Util.toArray3f(mVertexData), 3,
+            final Mesh mMesh = new Mesh(werkzeug.Util.toArray3f(mVertexData), 3,
                                                 werkzeug.Util.toArray4f(mColorData), 4,
                                                 null, 2,
                                                 null,
@@ -67,9 +67,9 @@ public class JoglDisposableBinTranslator
         /* delegate lines */
         if (mParseLineAsIndividualShape) {
             final LineTranslator mTranslator = new LineTranslator();
-            final Vector<JoglDisposableBin.Line> mLines = g.collectLines();
-            for (JoglDisposableBin.Line mGLine : mLines) {
-                final Line mLine = new JoglLine();
+            final Vector<DisposableBin.Line> mLines = g.collectLines();
+            for (DisposableBin.Line mGLine : mLines) {
+                final Line mLine = new Line();
                 mLine.position().set(g.position);
                 mLine.scale().set(g.scale);
                 mLine.points = new Vector3f[] {new Vector3f(mGLine.startX,
@@ -88,7 +88,7 @@ public class JoglDisposableBinTranslator
             final Vector<Vector3f> mVertexData = new Vector<Vector3f>();
             final Vector<Color> mColorData = new Vector<Color>(); /* sunflow can t interpret color data */
             g.collectLineData(mVertexData, mColorData);
-            final Line mLine = new JoglLine();
+            final Line mLine = new Line();
             mLine.position().set(g.position);
             mLine.scale().set(g.scale);
             mLine.points = werkzeug.Util.toArrayVector3f(mVertexData);

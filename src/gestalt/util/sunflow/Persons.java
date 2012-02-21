@@ -23,30 +23,29 @@
 
 package gestalt.util.sunflow;
 
-
-import java.io.InputStream;
-import java.util.Vector;
-
 import gestalt.context.GLContext;
-import gestalt.impl.jogl.shape.JoglMesh;
-import gestalt.impl.jogl.shape.material.JoglTexturePlugin;
 import gestalt.model.Model;
 import gestalt.model.ModelData;
 import gestalt.model.ModelLoaderOBJ;
 import gestalt.shape.AbstractDrawable;
-import gestalt.texture.Bitmap;
-import gestalt.texture.Bitmaps;
+import gestalt.shape.Mesh;
+import gestalt.material.TexturePlugin;
+import gestalt.material.texture.Bitmap;
+import gestalt.material.texture.Bitmaps;
 
 import mathematik.TransformMatrix4f;
 import mathematik.Vector3f;
 
 import data.Resource;
 
+import java.io.InputStream;
+import java.util.Vector;
+
 
 public class Persons
         extends AbstractDrawable {
 
-    private final JoglMesh mPersonModel;
+    private final Mesh mPersonModel;
 
     private final String mPersonTexturePath;
 
@@ -71,17 +70,17 @@ public class Persons
         return myPersonInstance;
     }
 
-    private JoglMesh model(InputStream theModelFile,
+    private Mesh model(InputStream theModelFile,
                            String theImageFile) {
         final ModelData myModelData = ModelLoaderOBJ.getModelData(theModelFile);
-        final JoglMesh myModelMesh = new JoglMesh(myModelData.vertices, 3,
+        final Mesh myModelMesh = new Mesh(myModelData.vertices, 3,
                                                   myModelData.vertexColors, 4,
                                                   myModelData.texCoordinates, 2,
                                                   myModelData.normals,
                                                   myModelData.primitive);
         final Model myModel = new Model(myModelData, myModelMesh);
         final Bitmap myBitmap = Bitmaps.getBitmap(theImageFile);
-        final JoglTexturePlugin myTexture = new JoglTexturePlugin();
+        final TexturePlugin myTexture = new TexturePlugin();
         myTexture.scale().y = -1;
         myTexture.load(myBitmap);
         myModel.mesh().material().addTexture(myTexture);
@@ -97,7 +96,7 @@ public class Persons
         }
     }
 
-    public JoglMesh mesh() {
+    public Mesh mesh() {
         return mPersonModel;
     }
 
