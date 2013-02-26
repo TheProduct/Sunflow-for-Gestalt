@@ -43,7 +43,7 @@ public class QuadLineTranslator
         if (myDrawable instanceof SunflowMaterial) {
             ((SunflowMaterial)myDrawable).sendMaterial(theParent);
         } else {
-            theParent.sendAmbientOcclusionMaterial(myDrawable.material().color);
+            theParent.sendAmbientOcclusionMaterial(myDrawable.material().color4f());
         }
 
         final QuadFragment[] myFragments = myDrawable.getLineFragments();

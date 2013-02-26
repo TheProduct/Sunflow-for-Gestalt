@@ -79,14 +79,14 @@ public class JoglDisposableBinTranslator
                                                             mGLine.endY,
                                                             mGLine.endZ)};
                 mLine.linewidth = mGLine.width;
-                mLine.material().color.set(mGLine.color.r, mGLine.color.g, mGLine.color.b, mGLine.color.a);
+                mLine.material().color4f().set(mGLine.color.r, mGLine.color.g, mGLine.color.b, mGLine.color.a);
                 mLine.setPrimitive(Gestalt.LINE_PRIMITIVE_TYPE_LINES);
                 mTranslator.parse(theParent, mLine);
             }
         } else {
             final LineTranslator mTranslator = new LineTranslator();
             final Vector<Vector3f> mVertexData = new Vector<Vector3f>();
-            final Vector<Color> mColorData = new Vector<Color>(); /* sunflow can t interpret color data */
+            final Vector<Color> mColorData = new Vector<Color>(); /* sunflow can t interpret color4f data */
             g.collectLineData(mVertexData, mColorData);
             final Line mLine = new Line();
             mLine.position().set(g.position);

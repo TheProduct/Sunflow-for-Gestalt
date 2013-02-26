@@ -49,7 +49,7 @@ public class SketchTestLines
 
         /* create a line with the drawablefactory */
         mLine = drawablefactory().line();
-        mLine.material().color.set(1f, 1f);
+        mLine.material().color4f().set(1f, 1f);
         mLine.points = new Vector3f[500];
         for (int i = 0; i < mLine.points.length; i++) {
             mLine.points[i] = new Vector3f(Math.random() * 300 - 150,

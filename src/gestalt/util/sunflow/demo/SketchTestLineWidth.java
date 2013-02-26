@@ -45,7 +45,7 @@ public class SketchTestLineWidth
         /* create a line with the drawablefactory */
         for (int i = 0; i < 10; i++) {
             final Line mLine = drawablefactory().line();
-            mLine.material().color.set(1f, 1f);
+            mLine.material().color4f().set(1f, 1f);
             mLine.points = new Vector3f[] {
                         new Vector3f(-100, i * 10, 0),
                         new Vector3f(100, i * 10, 0)

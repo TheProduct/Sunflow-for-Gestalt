@@ -41,11 +41,11 @@ public class LineTranslator
         if (myDrawable instanceof SunflowMaterial) {
             ((SunflowMaterial)myDrawable).sendMaterial(theParent);
         } else {
-            theParent.sendAmbientOcclusionMaterial(myDrawable.material().color);
+            theParent.sendAmbientOcclusionMaterial(myDrawable.material().color4f());
         }
 
         /* geometry */
-        /* what about color? */
+        /* what about color4f? */
         theParent.sendLines(myDrawable);
         theParent.bumpDrawableID();
     }

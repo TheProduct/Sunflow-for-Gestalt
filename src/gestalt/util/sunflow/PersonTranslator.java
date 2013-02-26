@@ -42,7 +42,7 @@ public class PersonTranslator
         final Mesh myMesh = myPerson.mesh();
 
         for (Person myPersonInstance : myPerson.persons()) {
-            theParent.sendTexturedAmbientOcclusionMaterial(myMesh.material().color,
+            theParent.sendTexturedAmbientOcclusionMaterial(myMesh.material().color4f(),
                                                            myPerson.texturefile());
             theParent.sendTriangles(myMesh.vertices(),
                                     myMesh.normals(),

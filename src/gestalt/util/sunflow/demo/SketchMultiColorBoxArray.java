@@ -53,7 +53,7 @@ public class SketchMultiColorBoxArray
         mFloor.position().set(0, 0, 0);
         mFloor.rotation().x = PI_HALF;
         mFloor.material().transparent = true;
-        mFloor.material().color.set(1, 0.2f);
+        mFloor.material().color4f().set(1, 0.2f);
 
         final int CUBES = 20;
         for (int x = 0; x < CUBES; x++) {
@@ -65,7 +65,7 @@ public class SketchMultiColorBoxArray
                     p.position().add(CUBES * 8 / -2.0f,
                                      8,
                                      CUBES * 8 / -2.0f);
-                    p.material().color.set(getRandomColor());
+                    p.material().color4f().set(getRandomColor());
                 }
             }
         }

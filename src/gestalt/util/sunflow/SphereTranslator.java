@@ -23,14 +23,30 @@
 
 package gestalt.util.sunflow;
 
-
 import gestalt.render.Drawable;
+import gestalt.shape.Sphere;
 
 
-public interface SunflowTranslator {
+public class SphereTranslator
+        implements SunflowTranslator {
 
-    boolean isClass(Drawable theDrawable);
+    public boolean isClass(Drawable theDrawable) {
+        return theDrawable instanceof Sphere;
+    }
 
-    void parse(GestaltSunflowRenderer theParent,
-               Drawable theDrawable);
+    public void parse(GestaltSunflowRenderer theParent,
+                      Drawable theDrawable) {
+        final Sphere myDrawable = (Sphere)theDrawable;
+
+        /* material */
+        if (myDrawable instanceof SunflowMaterial) {
+            ((SunflowMaterial)myDrawable).sendMaterial(theParent);
+        } else {
+            theParent.sendAmbientOcclusionMaterial(myDrawable.material().color4f());
+        }
+
+        /* geometry */
+        theParent.sendSphere(myDrawable);
+        theParent.bumpDrawableID();
+    }
 }

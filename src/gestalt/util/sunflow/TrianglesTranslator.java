@@ -43,7 +43,7 @@ public class TrianglesTranslator
         if (myDrawable instanceof SunflowMaterial) {
             ((SunflowMaterial)myDrawable).sendMaterial(theParent);
         } else {
-            theParent.sendAmbientOcclusionMaterial(myDrawable.material().color);
+            theParent.sendAmbientOcclusionMaterial(myDrawable.material().color4f());
         }
 
         final float[] myVertices = new float[myDrawable.triangles().size() * 3 * 3];

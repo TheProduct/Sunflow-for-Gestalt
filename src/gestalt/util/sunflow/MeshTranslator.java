@@ -42,7 +42,7 @@ public class MeshTranslator
         if (myDrawable instanceof SunflowMaterial) {
             ((SunflowMaterial)myDrawable).sendMaterial(theParent);
         } else {
-            theParent.sendAmbientOcclusionMaterial(myDrawable.material().color);
+            theParent.sendAmbientOcclusionMaterial(myDrawable.material().color4f());
         }
 
         /* geometry */

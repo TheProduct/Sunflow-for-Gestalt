@@ -58,7 +58,7 @@ public class SketchUsingSunflowMaterials
                     p.position().add(CUBES * 8 / -2.0f,
                                      8,
                                      CUBES * 8 / -2.0f);
-                    p.material().color.set((float)x / (float)CUBES, (float)y / (float)CUBES, (float)z / (float)CUBES);
+                    p.material().color4f().set((float)x / (float)CUBES, (float)y / (float)CUBES, (float)z / (float)CUBES);
                 }
             }
         }
@@ -69,7 +69,7 @@ public class SketchUsingSunflowMaterials
             implements SunflowMaterial {
 
         public void sendMaterial(GestaltSunflowRenderer theParent) {
-            theParent.sendGlassMaterial(material().color,
+            theParent.sendGlassMaterial(material().color4f(),
                                         1.33f,
                                         50,
                                         new Color(1.0f));

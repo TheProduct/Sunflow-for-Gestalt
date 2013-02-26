@@ -23,7 +23,6 @@
 
 package gestalt.util.sunflow;
 
-
 import gestalt.Gestalt;
 import java.util.Vector;
 
@@ -44,6 +43,7 @@ import gestalt.render.controller.Camera;
 import gestalt.render.controller.cameraplugins.Light;
 import gestalt.material.Color;
 import gestalt.shape.Line;
+import gestalt.shape.Sphere;
 
 import mathematik.Matrix3f;
 import mathematik.TransformMatrix4f;
@@ -136,6 +136,7 @@ public class GestaltSunflowRenderer
         mTranslators.add(new TrianglesTranslator());
         mTranslators.add(new PlaneTranslator());
         mTranslators.add(new LineTranslator());
+        mTranslators.add(new SphereTranslator());
 
         mTranslators.add(new JoglDisposableBinTranslator());
         mTranslators.add(new PersonTranslator());
@@ -412,13 +413,13 @@ public class GestaltSunflowRenderer
 //        }
 
         /*
-        // create geometry @ SCParser
-        api.parameter("triangles", triangles);
-        api.parameter("points", "point", "vertex", points);
-        api.parameter("normals", "vector", "vertex", normals);
-        api.parameter("uvs", "texcoord", "vertex", uvs);
-        api.geometry(name, "triangle_mesh");
-
+         * // create geometry @ SCParser
+         * api.parameter("triangles", triangles);
+         * api.parameter("points", "point", "vertex", points);
+         * api.parameter("normals", "vector", "vertex", normals);
+         * api.parameter("uvs", "texcoord", "vertex", uvs);
+         * api.geometry(name, "triangle_mesh");
+         *
          */
 
         int[] mFaces = new int[pVertices.length / 3];
@@ -442,6 +443,23 @@ public class GestaltSunflowRenderer
 
         mSunflow.parameter("shaders", SHADER_NAME + _myDrawableID);
         mSunflow.instance("myPrimitive" + _myDrawableID + ".instance", "myPrimitive" + _myDrawableID);
+    }
+
+    public void sendSphere(Sphere pDrawable) {
+        final Vector3f p = pDrawable.position();
+        final Matrix4 translate = Matrix4.IDENTITY.multiply(Matrix4.translation(p.x, p.y, p.z));
+        final Vector3f s = pDrawable.scale();
+        /* half scale? */
+        final Matrix4 scale = Matrix4.IDENTITY.multiply(Matrix4.scale(s.x * 0.5f, s.y * 0.5f, s.z * 0.5f));
+
+        Matrix4 m = Matrix4.IDENTITY;
+        m = scale.multiply(m);
+        m = translate.multiply(m);
+
+        mSunflow.geometry("Sphere" + _myDrawableID, "sphere");
+        mSunflow.parameter("shaders", SHADER_NAME + _myDrawableID);
+        mSunflow.parameter("transform", m);
+        mSunflow.instance("Sphere" + _myDrawableID + ".instance", "Sphere" + _myDrawableID);
     }
 
     public void sendLines(final Line pDrawable) {
@@ -566,8 +584,9 @@ public class GestaltSunflowRenderer
          *
          * @param pl list of parameters to read from
          * @param api reference to the current scene
-         * @return <code>true</code> if the update is succesfull,
-         *         <code>false</code> otherwise
+         * @return
+         * <code>true</code> if the update is succesfull,
+         * <code>false</code> otherwise
          */
         public boolean update(ParameterList pl, SunflowAPI api) {
             return true;
